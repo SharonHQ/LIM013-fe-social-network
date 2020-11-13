@@ -1,4 +1,4 @@
-import { createUserAccount } from '../src/firebase/autentication.js';
+import { createUserAccount, signInUserAccount } from '../src/firebase/autentication.js';
 // configurando firebase mock
 const firebasemock = require('firebase-mock');
 
@@ -18,8 +18,19 @@ describe('createUserAccount', () => {
   it('should be a function', () => {
     expect(typeof createUserAccount).toBe('function');
   });
-  it('Debería poder iniciar sesion', () => {
+  it('should be able to create a user account', () => {
     createUserAccount('front@end.la', '123456')
+      .then((user) => {
+        expect(user.email).toBe('front@end.la');
+      });
+  });
+});
+describe('signInUserAccount', () => {
+  it('should be a function', () => {
+    expect(typeof signInUserAccount).toBe('function');
+  });
+  it('should be able to login', () => {
+    signInUserAccount('front@end.la', '123456')
       .then((user) => {
         expect(user.email).toBe('front@end.la');
       });
