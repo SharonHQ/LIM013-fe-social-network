@@ -1,8 +1,8 @@
-import { createUserAccount } from '../firebase/autentication.js';
+import { signInUserAccount } from '../firebase/autentication.js';
 
-export const createUser = (email, password) => {
+export const signInUser = (email, password) => {
   const messageError = document.getElementById('errorMessage');
-  createUserAccount(email, password)
+  signInUserAccount(email, password)
     .then(() => {
       window.location.hash = '#/home';
     })

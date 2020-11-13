@@ -1,19 +1,23 @@
 import { components } from '../view/components.js';
 
-export const changeTmp = (hash) => {
-  const id = hash.split('/')[1];
-  const sectionMain = document.getElementById('container');
-  sectionMain.innerHTML = '';
-
-  switch (hash) {
-    case '':
-    case '#':
-    case '#/':
-    { return sectionMain.appendChild(components.signup()); }
-    case '#/home':
-    case '#/signin':
-    { return sectionMain.appendChild(components[id]()); }
-    default:
-      return sectionMain.appendChild(components.different());
+export const changeView = (route) => {
+  window.location.hash = route;
+  const container = document.getElementById('container');
+  container.innerHTML = '';
+  let chosenRoute = '';
+  switch (route) {
+    case '': chosenRoute = container.appendChild(components.signup());
+      break;
+    case '#/': chosenRoute = container.appendChild(components.signup());
+      break;
+    case '#/home': chosenRoute = container.appendChild(components.home());
+      break;
+    case '#/signup': chosenRoute = container.appendChild(components.signup());
+      break;
+    case '#/signin': chosenRoute = container.appendChild(components.signin());
+      break;
+    default: chosenRoute = container.appendChild(components.signin());
+      break;
   }
+  return chosenRoute;
 };
