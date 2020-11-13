@@ -1,4 +1,4 @@
-import { createUserAccount, signInUserAccount } from '../src/firebase/autentication.js';
+import { createUserAccount, signInUserAccount, signInWithGoogle } from '../src/firebase/autentication.js';
 // configurando firebase mock
 const firebasemock = require('firebase-mock');
 
@@ -31,6 +31,18 @@ describe('signInUserAccount', () => {
   });
   it('should be able to login', () => {
     signInUserAccount('front@end.la', '123456')
+      .then((user) => {
+        expect(user.email).toBe('front@end.la');
+      });
+  });
+});
+
+describe('signInWithGoogle', () => {
+  it('should be a function', () => {
+    expect(typeof signInWithGoogle).toBe('function');
+  });
+  it('should be able to login with Google', () => {
+    signInWithGoogle('front@end.la')
       .then((user) => {
         expect(user.email).toBe('front@end.la');
       });

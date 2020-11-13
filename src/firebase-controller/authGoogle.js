@@ -1,8 +1,10 @@
-import { signInUserAccount } from '../firebase/autentication.js';
+import { signInWithGoogle } from '../firebase/autentication.js';
 
-export const signInUser = (email, password) => {
+const provider = new firebase.auth.GoogleAuthProvider();
+
+export const googleAccount = () => {
   const messageError = document.getElementById('errorMessage');
-  signInUserAccount(email, password)
+  signInWithGoogle(provider)
     .then(() => {
       messageError.innerHTML = '';
       window.location.hash = '#/home';

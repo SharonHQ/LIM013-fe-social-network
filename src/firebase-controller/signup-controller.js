@@ -4,6 +4,7 @@ export const createUser = (email, password) => {
   const messageError = document.getElementById('errorMessage');
   createUserAccount(email, password)
     .then(() => {
+      messageError.innerHTML = '';
       window.location.hash = '#/home';
     })
     .catch((e) => {
