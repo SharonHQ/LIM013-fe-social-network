@@ -110,7 +110,7 @@ button:hover{
 }
 
 @media (min-width:768px) {
-  #container {
+  .main {
       grid-template-columns: 100%;
   }
 

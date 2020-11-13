@@ -16,7 +16,7 @@ export const changeView = (route) => {
       break;
     case '#/signin': chosenRoute = container.appendChild(components.signin());
       break;
-    default: chosenRoute = container.appendChild(components.signin());
+    default: chosenRoute = container.appendChild(components.different());
       break;
   }
   return chosenRoute;
