@@ -15,10 +15,16 @@ export default () => {
       <i class="fas fa-pencil-alt icon-edit-profile" id="open"></i>
       <div id="mask" class="hidden"></div>
       <section id="modal" class="hidden">
-        <p>parrafo de texto</p>
-        <div id="close">
-          close
-        </div>
+        <p>Nombre de usuario</p>
+        <input class ="email-signin" type="text"  value="Sharon Huaman" required>
+        <p>Correo de usuario</p>
+        <input class ="email-signin" type="email" id="email" name="user_mail" value="sharonb.huaman@gmail.com" required>
+        <p>Contraseña</p>
+        <input class = "password-signin" type="password" id="password" name="user_password" value="asdfgh1" required>
+        <button id="close" class="submit-signin">
+          <i class="fas fa-save"></i>
+          Guardar  Cambios
+        </button>
       </section>
     </section>
     <section class="post">
