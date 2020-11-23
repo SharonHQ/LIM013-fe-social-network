@@ -1,16 +1,20 @@
+import { signOutUser } from '../firebase-controller/signout-controller.js';
+import { uploadProfileImg } from '../firestorage/storage.js';
+
 export default () => {
   const viewProfile = `
     <nav class="menu-profile">
       <ul>
         <a href="#/profile"><img class="img-user-profile" src="./img/user-default.svg"></a>
         <a href="#/home"><img src="./img/logo-lab-white.svg"></a>
-        <a href="#"><i class="fas fa-sign-out-alt logout-profile"></i></a>
+        <a href="#"><i id="logout" class="fas fa-sign-out-alt logout-profile"></i></a>
       </ul>
     </nav>
     <section class="user-edit-profile">
       <h3 class="name-user">Sharon Huaman</h3>
-      <img class="img-edit-user-profile"src="./img/user-default.svg">
+      <img class="img-edit-user-profile" src="./img/user-default.svg">
       <i class="fas fa-camera camera-profile"></i>
+      <input id="file" type ="file"/>
       <p class="correo-profile">sharonb.huaman@gmail.com</p>
       <i class="fas fa-pencil-alt icon-edit-profile" id="open"></i>
       <div id="mask" class="hidden"></div>
@@ -39,6 +43,21 @@ export default () => {
   const sectionElement = document.createElement('section');
   sectionElement.classList.add('position-profile');
   sectionElement.innerHTML = viewProfile;
+
+  const logout = sectionElement.querySelector('#logout');
+  logout.addEventListener('click', () => {
+    signOutUser();
+  });
+
+  const camera = sectionElement.querySelector('.camera-profile');
+  const file = sectionElement.querySelector('#file');
+  camera.addEventListener('click', () => {
+    file.click();
+    file.addEventListener('change', () => {
+      const photo = file.files[0];
+      uploadProfileImg(photo);
+    });
+  });
 
   const open = sectionElement.querySelector('#open');
   const close = sectionElement.querySelector('#close');

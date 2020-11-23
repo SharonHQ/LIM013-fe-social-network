@@ -26,8 +26,11 @@
 
 .img-edit-user-profile {
   display: block;
+  object-fit: cover;
   width: 220px;
+  height: 220px;
   margin-bottom: -10px;
+  border-radius: 250px;
 }
 
 .user-edit-profile {

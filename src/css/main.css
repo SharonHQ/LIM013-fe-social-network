@@ -12,5 +12,9 @@ body {
   display: grid;
   width: 100%;
   align-items: center;
-  align-content: space-evenly; 
+  align-content: space-evenly;
+}
+
+#file {
+  display: none;
 }

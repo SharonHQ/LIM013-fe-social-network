@@ -8,3 +8,7 @@ export const signInUserAccount = (email, password) => auth()
 
 export const signInWithGoogle = provider => auth()
   .signInWithPopup(provider);
+
+export const signOut = () => auth().signOut();
+
+export const user = () => auth().currentUser;
