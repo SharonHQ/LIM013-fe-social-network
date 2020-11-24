@@ -1,3 +1,5 @@
+import { signOutUser } from '../firebase-controller/signout-controller.js';
+
 export default () => {
   const userPicture = localStorage.getItem('userpicture');
   const userName = localStorage.getItem('username');
