@@ -1,32 +1,28 @@
-import { user } from '../firebase/autentication.js';
 import { signOutUser } from '../firebase-controller/signout-controller.js';
 import { uploadProfileImg } from '../firebase/storage.js';
 
-export default () => {
+export default (data) => {
   const viewProfile = `
     <nav class="menu-profile">
       <ul>
-        <a href="#/profile"><img class="img-user-profile" src="./img/user-default.svg"></a>
+        <a href="#/profile"><img class="img-user-profile" src=${data.photo}></a>
         <a href="#/home"><img src="./img/logo-lab-white.svg"></a>
         <a href="#"><i id="logout" class="fas fa-sign-out-alt logout-profile"></i></a>
       </ul>
     </nav>
     <section class="user-edit-profile">
-      <h3 class="name-user">Sharon Huaman</h3>
-      <img class="img-edit-user-profile" src="./img/user-default.svg">
+      <img class="img-edit-user-profile" src=${data.photo}>
       <i class="fas fa-camera camera-profile"></i>
       <input id="file" type ="file"/>
-      <p class="correo-profile">sharonb.huaman@gmail.com</p>
+      <h3 class="name-user">${data.name}</h3>
       <i class="fas fa-pencil-alt icon-edit-profile" id="open"></i>
+      
+      <p class="correo-profile">${data.mail}</p>
       <div id="mask" class="hidden"></div>
       <section id="modal" class="hidden">
         <form>
           <p>Nombre de usuario</p>
-          <input class ="email-signin" type="text" id="name" name="user_mail" placeholder="Ingresa tu nombre" required>
-          <p>Correo de usuario</p>
-          <input class = "password-signin" type="password" id="email" name="user_password" placeholder="Ingresa tu contraseña" required>
-          <p>Contraseña</p>
-          <input class = "password-signin" type="password" id="password" name="user_password" placeholder="Ingresa tu contraseña" required>
+          <input class ="email-signin" type="text" id="name" name="user_mail" placeholder="Ingresa tu nombre" value=${data.name} required>
           <input id="close" class="submit-signin" type="submit" id="signin" value="Guardar Cambios">
         </form>
       </section>
@@ -34,12 +30,15 @@ export default () => {
     <section class="post">
       <section class="own-post-profile">
         <i class="fas fa-ellipsis-v icon-more-profile"></i>
+          <div class="dropdown-content">
+            <li>Editar</li>
+            <li href="#">Borrar</li>
+          </div>
         <textarea class="text-own-post" disabled>Hola, ¿Alguien me puede recomendar un video de configuración de firebase?
         </textarea>
       </section>
     </section>
     `;
-  const currentUser = user();
   const db = firebase.firestore();
   document.getElementById('container').classList.remove('main');
   const sectionElement = document.createElement('section');
@@ -71,18 +70,22 @@ export default () => {
     mask.classList.remove('hidden');
   });
   close.addEventListener('click', () => {
-    db.collection('users-qa').doc(currentUser.uid).update({
-      mail: '',
-      name: '',
-      pass: '',
-    });
-    modal.classList.add('hidden');
-    mask.classList.add('hidden');
+    const newName = sectionElement.querySelector('#name').value;
+    const uidUser = localStorage.getItem('iduser');
+    db.collection('users-qa').doc(uidUser).update({
+      name: newName,
+    })
+      .then(() => {
+        modal.classList.add('hidden');
+        mask.classList.add('hidden');
+      })
+      .catch((error) => {
+        console.error('Error updating document: ', error);
+      });
   });
   mask.addEventListener('click', () => {
     modal.classList.add('hidden');
     mask.classList.add('hidden');
   });
-
   return sectionElement;
 };
