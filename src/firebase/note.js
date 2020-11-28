@@ -1,11 +1,12 @@
-export const addNote = (textNewNote) => {
-  const uidUser = localStorage.getItem('iduser');
-  firebase.firestore().collection('notes').add({
-    uid: uidUser,
+import { getUser } from './store.js';
+
+export const addNote = (textNewNote, privacy) => getUser()
+  .then(doc => doc.data())
+  .then(data => firebase.firestore().collection('notes').add({
+    ...data,
     title: textNewNote,
-    state: false,
-  });
-};
+    state: privacy,
+  }));
 
 export const deleteNote = idNote => firebase.firestore().collection('notes').doc(idNote).delete();
 

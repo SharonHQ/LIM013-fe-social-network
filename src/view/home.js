@@ -7,12 +7,12 @@ const itemNote = (objNote) => {
   postElement.innerHTML = `
     <img class="publicPicture" src=${objNote.photo}>
     <p class="publicName">${objNote.name}</p>
-    <textarea class="publicPosts">${objNote.title}</textarea>
+    <textarea id="textarea-update" class="publicPosts" disabled>${objNote.title}</textarea>
   `;
   return postElement;
 };
 
-export default (data) => {
+export default (data, notes) => {
   const viewHome = `
     <header class="mainHead">
         <img id="profileView" class="userPicture" src=${data.photo}>
@@ -24,13 +24,17 @@ export default (data) => {
         <p class="userName">${data.name}</p>
         <p class="userEmail">${data.mail}</p>
     </aside>
-    <article class="content">
+    <article class="content" id="notes-list">
         <textarea id="input-new-note" class="inputPosts" placeholder="Escribe tu pregunta aquí" ></textarea>
-        <button class="btn-add-note" type="submit" id="postsButton" >Publicar</button>
-        <section class="publicSide" id="notes-list">
-        </section>
-    </article> 
-    
+        <div class ="opt">
+          <label class ="privacity">
+            <input type="checkbox" id="checkbox-privacy" />
+            <span>Privado</span>
+          </label>
+          <button class="btn-add-note" type="submit" id="postsButton" >Publicar</button>
+        </div>
+
+    </article>
     `;
   const sectionElement = document.createElement('div');
   sectionElement.classList.add('homeContainer');
@@ -38,7 +42,7 @@ export default (data) => {
 
   const buttonAddNote = sectionElement.querySelector('.btn-add-note');
   const ul = sectionElement.querySelector('#notes-list');
-  data.forEach(note => ul.appendChild(itemNote(note)));
+  notes.forEach(note => ul.appendChild(itemNote(note)));
   buttonAddNote.addEventListener('click', addNoteOnSubmit);
 
   const signOutButton = sectionElement.querySelector('#signOutButton');

@@ -1,7 +1,39 @@
 import { signOutUser } from '../firebase-controller/signout-controller.js';
 import { uploadProfileImg } from '../firebase/storage.js';
+import { deleteNoteOnClick, updateNote } from '../firebase-controller/crud-notes.js';
 
-export default (data) => {
+const itemNote = (objNote) => {
+  const postElement = document.createElement('section');
+  postElement.classList.add('own-post-profile');
+  postElement.innerHTML = `
+    <i class="fas fa-ellipsis-v icon-more-profile"></i>
+    <div class="dropdown-content">
+      <li id="btn-edit-${objNote.id}">Editar</li>
+      <li id="btn-deleted-${objNote.id}">Borrar</li>
+    </div>
+    <textarea class="text-own-post" disabled>${objNote.title}
+    </textarea>
+    <i class="fas fa-save save-icon"></i>
+  `;
+  // agregando evento de click al btn eliminar una nota
+  postElement.querySelector(`#btn-deleted-${objNote.id}`)
+    .addEventListener('click', () => deleteNoteOnClick(objNote));
+  // agregando evento de click al btn editar una nota
+  postElement.querySelector(`#btn-edit-${objNote.id}`)
+    .addEventListener('click', () => {
+      postElement.querySelector('.text-own-post').removeAttribute('disabled');
+      postElement.querySelector('.save-icon').style.visibility = 'visible';
+    });
+  postElement.querySelector('.save-icon').addEventListener('click', () => {
+    const textAreaElement = postElement.querySelector('.text-own-post');
+    textAreaElement.setAttribute('disabled', true);
+    postElement.querySelector('.save-icon').style.visibility = 'hidden';
+    updateNote(objNote, textAreaElement.value);
+  });
+  return postElement;
+};
+
+export default (data, notes) => {
   const viewProfile = `
     <nav class="menu-profile">
       <ul>
@@ -27,16 +59,7 @@ export default (data) => {
         </form>
       </section>
     </section>
-    <section class="post">
-      <section class="own-post-profile">
-        <i class="fas fa-ellipsis-v icon-more-profile"></i>
-          <div class="dropdown-content">
-            <li>Editar</li>
-            <li href="#">Borrar</li>
-          </div>
-        <textarea class="text-own-post" disabled>Hola, ¿Alguien me puede recomendar un video de configuración de firebase?
-        </textarea>
-      </section>
+    <section id="notes-list" class="post">
     </section>
     `;
   const db = firebase.firestore();
@@ -44,6 +67,9 @@ export default (data) => {
   const sectionElement = document.createElement('section');
   sectionElement.classList.add('position-profile');
   sectionElement.innerHTML = viewProfile;
+
+  const ul = sectionElement.querySelector('#notes-list');
+  notes.forEach(note => ul.appendChild(itemNote(note)));
 
   const logout = sectionElement.querySelector('#logout');
   logout.addEventListener('click', () => {

@@ -19,3 +19,8 @@ body {
 #file {
   display: none;
 }
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}

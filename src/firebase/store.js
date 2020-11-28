@@ -7,11 +7,8 @@ export const inToUser = (user) => {
     .catch(e => e);
 };
 
-export const getUser = (callback) => {
+export const getUser = () => {
   const db = firebase.firestore();
   const uidUser = localStorage.getItem('iduser');
-  db.collection('users-qa').doc(uidUser)
-    .get()
-    .then(doc => (doc.exists ? callback(doc.data()) : 'No such document!'))
-    .catch(error => error);
+  return db.collection('users-qa').doc(uidUser).get();
 };
